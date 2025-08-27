@@ -1,0 +1,355 @@
+@Ambev.DeveloperEvaluation.WebApi_HostAddress = http://localhost:5119
+
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+# ===========================================
+# SALES API ENDPOINTS - Complete Test Suite
+# ===========================================
+
+### 1. CREATE SALE - Valid Request (Test Business Rules)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-001",
+  "customer": "João Silva",
+  "branch": "Loja Centro",
+  "items": [
+    {
+      "productId": "11111111-1111-1111-1111-111111111111",
+      "productName": "Cerveja Brahma 350ml",
+      "quantity": 5,
+      "unitPrice": 3.50
+    },
+    {
+      "productId": "22222222-2222-2222-2222-222222222222", 
+      "productName": "Cerveja Skol 350ml",
+      "quantity": 15,
+      "unitPrice": 3.20
+    },
+    {
+      "productId": "33333333-3333-3333-3333-333333333333",
+      "productName": "Água Mineral 500ml",
+      "quantity": 3,
+      "unitPrice": 2.00
+    }
+  ]
+}
+
+### 2. CREATE SALE - Test 10% Discount (4-9 items)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-002",
+  "customer": "Maria Santos",
+  "branch": "Loja Norte",
+  "items": [
+    {
+      "productId": "44444444-4444-4444-4444-444444444444",
+      "productName": "Guaraná Antarctica 350ml",
+      "quantity": 7,
+      "unitPrice": 3.00
+    }
+  ]
+}
+
+### 3. CREATE SALE - Test 20% Discount (10-20 items)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-003",
+  "customer": "Pedro Oliveira",
+  "branch": "Loja Sul",
+  "items": [
+    {
+      "productId": "55555555-5555-5555-5555-555555555555",
+      "productName": "Coca-Cola 2L",
+      "quantity": 12,
+      "unitPrice": 8.50
+    }
+  ]
+}
+
+### 4. CREATE SALE - Test Maximum Quantity (20 items)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-004",
+  "customer": "Ana Costa",
+  "branch": "Loja Oeste",
+  "items": [
+    {
+      "productId": "66666666-6666-6666-6666-666666666666",
+      "productName": "Suco de Laranja 1L",
+      "quantity": 20,
+      "unitPrice": 6.00
+    }
+  ]
+}
+
+### 5. CREATE SALE - Validation Error (Quantity > 20)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-005",
+  "customer": "Carlos Lima",
+  "branch": "Loja Leste",
+  "items": [
+    {
+      "productId": "77777777-7777-7777-7777-777777777777",
+      "productName": "Energético Red Bull",
+      "quantity": 25,
+      "unitPrice": 12.00
+    }
+  ]
+}
+
+### 6. CREATE SALE - Validation Error (Empty Fields)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "",
+  "customer": "",
+  "branch": "",
+  "items": []
+}
+
+### 7. CREATE SALE - Validation Error (Invalid Price)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-006",
+  "customer": "Test Customer",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "88888888-8888-8888-8888-888888888888",
+      "productName": "Test Product",
+      "quantity": 5,
+      "unitPrice": 0
+    }
+  ]
+}
+
+### 8. CREATE SALE - Duplicate Sale Number (Conflict)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "SALE-001",
+  "customer": "Duplicate Test",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "99999999-9999-9999-9999-999999999999",
+      "productName": "Test Product",
+      "quantity": 5,
+      "unitPrice": 10.00
+    }
+  ]
+}
+
+### 9. GET SALE BY ID (Replace {saleId} with actual ID from create response)
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### 10. GET SALE BY ID - Not Found
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/ffffffff-ffff-ffff-ffff-ffffffffffff
+Accept: application/json
+
+### 11. GET ALL SALES - No Filters
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Accept: application/json
+
+### 12. GET ALL SALES - With Pagination
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales?page=1&size=5
+Accept: application/json
+
+### 13. GET ALL SALES - Filter by Customer
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales?customer=João Silva
+Accept: application/json
+
+### 14. GET ALL SALES - Filter by Branch
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales?branch=Loja Centro
+Accept: application/json
+
+### 15. GET ALL SALES - Filter by Date Range
+GET {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales?startDate=2024-01-01&endDate=2024-12-31
+Accept: application/json
+
+### 16. UPDATE SALE - Valid Request (Replace {saleId} with actual ID)
+PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "customer": "João Silva Atualizado",
+  "branch": "Loja Centro Renovada",
+  "items": [
+    {
+      "productId": "11111111-1111-1111-1111-111111111111",
+      "productName": "Cerveja Brahma 350ml",
+      "quantity": 8,
+      "unitPrice": 3.75
+    },
+    {
+      "productId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "productName": "Cerveja Heineken 350ml",
+      "quantity": 6,
+      "unitPrice": 5.50
+    }
+  ]
+}
+
+### 17. UPDATE SALE - Not Found
+PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/ffffffff-ffff-ffff-ffff-ffffffffffff
+Content-Type: application/json
+
+{
+  "customer": "Test Customer",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "productName": "Test Product",
+      "quantity": 5,
+      "unitPrice": 10.00
+    }
+  ]
+}
+
+### 18. UPDATE SALE - Validation Error
+PUT {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "customer": "",
+  "branch": "",
+  "items": [
+    {
+      "productId": "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "productName": "",
+      "quantity": 0,
+      "unitPrice": -5.00
+    }
+  ]
+}
+
+### 19. CANCEL SALE (Replace {saleId} with actual ID)
+DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/00000000-0000-0000-0000-000000000000
+
+### 20. CANCEL SALE - Not Found
+DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/ffffffff-ffff-ffff-ffff-ffffffffffff
+
+### 21. CANCEL SALE - Already Cancelled (Run after #19)
+DELETE {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales/00000000-0000-0000-0000-000000000000
+
+###
+
+# ===========================================
+# BUSINESS RULES VALIDATION TESTS
+# ===========================================
+
+### Test 1: No Discount (Less than 4 items)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "BR-TEST-001",
+  "customer": "Business Rule Test 1",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "dddddddd-dddd-dddd-dddd-dddddddddddd",
+      "productName": "Test Product No Discount",
+      "quantity": 3,
+      "unitPrice": 10.00
+    }
+  ]
+}
+
+### Test 2: 10% Discount (Exactly 4 items)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "BR-TEST-002",
+  "customer": "Business Rule Test 2",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee",
+      "productName": "Test Product 10% Discount",
+      "quantity": 4,
+      "unitPrice": 10.00
+    }
+  ]
+}
+
+### Test 3: 20% Discount (Exactly 10 items)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "BR-TEST-003",
+  "customer": "Business Rule Test 3",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "ffffffff-ffff-ffff-ffff-ffffffffffff",
+      "productName": "Test Product 20% Discount",
+      "quantity": 10,
+      "unitPrice": 10.00
+    }
+  ]
+}
+
+### Test 4: 20% Discount (Exactly 20 items - Maximum)
+POST {{Ambev.DeveloperEvaluation.WebApi_HostAddress}}/api/sales
+Content-Type: application/json
+
+{
+  "saleNumber": "BR-TEST-004",
+  "customer": "Business Rule Test 4",
+  "branch": "Test Branch",
+  "items": [
+    {
+      "productId": "aaaabbbb-cccc-dddd-eeee-ffffaaaabbbb",
+      "productName": "Test Product Maximum Quantity",
+      "quantity": 20,
+      "unitPrice": 10.00
+    }
+  ]
+}
+
+###
+
+# ===========================================
+# EXPECTED RESULTS SUMMARY
+# ===========================================
+
+# CREATE SALE Tests:
+# - Test 1: Should succeed, show mixed discounts (10%, 20%, 0%)
+# - Test 2: Should succeed, show 10% discount for 7 items
+# - Test 3: Should succeed, show 20% discount for 12 items
+# - Test 4: Should succeed, show 20% discount for 20 items
+# - Test 5: Should fail with 400 - quantity validation error
+# - Test 6: Should fail with 400 - required field validation errors
+# - Test 7: Should fail with 400 - price validation error
+# - Test 8: Should fail with 409 - duplicate sale number
+
+# Business Rules Expected Total Amounts:
+# - BR-TEST-001: 3 * 10.00 = 30.00 (no discount)
+# - BR-TEST-002: 4 * 10.00 * 0.9 = 36.00 (10% discount)
+# - BR-TEST-003: 10 * 10.00 * 0.8 = 80.00 (20% discount)
+# - BR-TEST-004: 20 * 10.00 * 0.8 = 160.00 (20% discount)
+
+###
